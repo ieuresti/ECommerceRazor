@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36705.20 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerceRazor", "ECommerceRazor\ECommerceRazor.csproj", "{ADFFBDDC-36D3-4B06-9724-E3A93B78E6B3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ADFFBDDC-36D3-4B06-9724-E3A93B78E6B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADFFBDDC-36D3-4B06-9724-E3A93B78E6B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADFFBDDC-36D3-4B06-9724-E3A93B78E6B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADFFBDDC-36D3-4B06-9724-E3A93B78E6B3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EEF5CDEB-A8C8-4998-BA07-407D8EB49AA5}
+	EndGlobalSection
+EndGlobal
