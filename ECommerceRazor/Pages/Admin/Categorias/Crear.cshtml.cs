@@ -1,9 +1,9 @@
-using ECommerceRazor.Datos;
-using ECommerceRazor.Modelos;
+using ECommerce.DataAccess;
+using ECommerce.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace ECommerceRazor.Pages.Categorias
+namespace ECommerceRazor.Pages.Admin.Categorias
 {
     public class CrearModel : PageModel
     {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ECommerceRazor.Modelos
+namespace ECommerce.Models
 {
     public class Categoria
     {
