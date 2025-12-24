@@ -33,6 +33,9 @@ namespace ECommerceRazor.Pages.Categorias
 
             _context.Categorias.Remove(categoria);
             await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Categoría eliminada exitosamente.";
+
             // Retornar una respuesta JSON indicando éxito para manejarla del lado del cliente (sweetalert)
             return new JsonResult(new { success = true, message = "Categoría eliminada correctamente" });
         }

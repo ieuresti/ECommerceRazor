@@ -46,6 +46,8 @@ namespace ECommerceRazor.Pages.Categorias
             categoriaEnDb.OrdenVisualizacion = Categoria.OrdenVisualizacion;
             await _context.SaveChangesAsync();
 
+            TempData["Success"] = "Categoría actualizada exitosamente.";
+
             return RedirectToPage("Index");
         }
     }

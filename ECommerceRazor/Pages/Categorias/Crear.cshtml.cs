@@ -25,6 +25,15 @@ namespace ECommerceRazor.Pages.Categorias
 
         public async Task<IActionResult> OnPostAsync()
         {
+            // Validacion personalizada: comprobar si el nombre ya existe
+            bool nombreExiste = _context.Categorias.Any(c => c.Nombre == Categoria.Nombre);
+            if (nombreExiste)
+            {
+                // Agregar un error de modelo personalizado
+                ModelState.AddModelError("Categoria.Nombre", "El nombre de la categoría ya existe. Por favor, elija otro nombre.");
+                return Page();
+            }
+
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -33,6 +42,9 @@ namespace ECommerceRazor.Pages.Categorias
             Categoria.FechaCreacion = DateTime.Now;
             _context.Categorias.Add(Categoria);
             await _context.SaveChangesAsync();
+
+            // Usar TempData para mostrar un mensaje de éxito después de la redirección
+            TempData["Success"] = "Categoría creada exitosamente.";
 
             return RedirectToPage("Index");
         }
