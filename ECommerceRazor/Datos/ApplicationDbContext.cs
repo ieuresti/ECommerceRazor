@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ECommerceRazor.Modelos;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceRazor.Datos
 {
@@ -9,6 +10,6 @@ namespace ECommerceRazor.Datos
         }
 
         // DbSets de las entidades de la aplicación
-
+        public DbSet<Categoria> Categorias { get; set; }
     }
 }
