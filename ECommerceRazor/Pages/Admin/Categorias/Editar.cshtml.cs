@@ -1,4 +1,5 @@
 using ECommerce.DataAccess;
+using ECommerce.DataAccess.Repository.IRepository;
 using ECommerce.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -7,20 +8,20 @@ namespace ECommerceRazor.Pages.Admin.Categorias
 {
     public class EditarModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public EditarModel(ApplicationDbContext context)
+        public EditarModel(IUnitOfWork unitOfWork)
         {
-            this._context = context;
+            this._unitOfWork = unitOfWork;
         }
 
         [BindProperty]
         public Categoria Categoria { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(int id)
+        public IActionResult OnGet(int id)
         {
             // Buscar la categoría por su ID
-            Categoria = await _context.Categorias.FindAsync(id);
+            Categoria = _unitOfWork.Categoria.GetFirstOrDefault(c => c.Id == id);
             if (Categoria == null)
             {
                 return NotFound();
@@ -29,14 +30,14 @@ namespace ECommerceRazor.Pages.Admin.Categorias
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public IActionResult OnPost()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
             // Buscar la categoría en la base de datos
-            var categoriaEnDb = await _context.Categorias.FindAsync(Categoria.Id);
+            var categoriaEnDb = _unitOfWork.Categoria.GetFirstOrDefault(c => c.Id == Categoria.Id);
             if (categoriaEnDb == null)
             {
                 return NotFound();
@@ -44,7 +45,8 @@ namespace ECommerceRazor.Pages.Admin.Categorias
             // Actualizar los campos de la categoría
             categoriaEnDb.Nombre = Categoria.Nombre;
             categoriaEnDb.OrdenVisualizacion = Categoria.OrdenVisualizacion;
-            await _context.SaveChangesAsync();
+
+            _unitOfWork.Save();
 
             TempData["Success"] = "Categoría actualizada exitosamente.";
 

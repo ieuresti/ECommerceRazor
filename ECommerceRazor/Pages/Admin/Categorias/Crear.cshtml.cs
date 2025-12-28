@@ -1,4 +1,5 @@
 using ECommerce.DataAccess;
+using ECommerce.DataAccess.Repository.IRepository;
 using ECommerce.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -7,11 +8,11 @@ namespace ECommerceRazor.Pages.Admin.Categorias
 {
     public class CrearModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CrearModel(ApplicationDbContext context)
+        public CrearModel(IUnitOfWork unitOfWork)
         {
-            this._context = context;
+            this._unitOfWork = unitOfWork;
         }
 
         [BindProperty]
@@ -23,10 +24,10 @@ namespace ECommerceRazor.Pages.Admin.Categorias
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public IActionResult OnPost()
         {
             // Validacion personalizada: comprobar si el nombre ya existe
-            bool nombreExiste = _context.Categorias.Any(c => c.Nombre == Categoria.Nombre);
+            bool nombreExiste = _unitOfWork.Categoria.Exists(c => c.Nombre == Categoria.Nombre);
             if (nombreExiste)
             {
                 // Agregar un error de modelo personalizado
@@ -40,8 +41,9 @@ namespace ECommerceRazor.Pages.Admin.Categorias
             }
             // Asignar la fecha de creación antes de guardar
             Categoria.FechaCreacion = DateTime.Now;
-            _context.Categorias.Add(Categoria);
-            await _context.SaveChangesAsync();
+
+            _unitOfWork.Categoria.Add(Categoria);
+            _unitOfWork.Save();
 
             // Usar TempData para mostrar un mensaje de éxito después de la redirección
             TempData["Success"] = "Categoría creada exitosamente.";

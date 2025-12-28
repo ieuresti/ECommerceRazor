@@ -1,4 +1,6 @@
 using ECommerce.DataAccess;
+using ECommerce.DataAccess.Repository;
+using ECommerce.DataAccess.Repository.IRepository;
 using ECommerce.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -8,31 +10,31 @@ namespace ECommerceRazor.Pages.Admin.Categorias
 {
     public class IndexModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public IndexModel(ApplicationDbContext context)
+        public IndexModel(IUnitOfWork unitOfWork)
         {
-            this._context = context;
+            this._unitOfWork = unitOfWork;
         }
         // Con en default! le indicamos al compilador que esta propiedad se inicializa en otro lugar
-        public IList<Categoria> Categorias { get; set; } = default!;
+        public IEnumerable<Categoria> Categorias { get; set; } = default!;
 
-        public async Task OnGetAsync()
+        public void OnGet()
         {
-            // Obtener las categorías ordenadas por OrdenVisualizacion
-            Categorias = await _context.Categorias.OrderBy(c => c.OrdenVisualizacion).ToListAsync();
+            // Obtener todas las categorias desde el repositorio
+            Categorias = _unitOfWork.Categoria.GetAll();
         }
 
-        public async Task<IActionResult> OnPostDeleteAsync([FromBody] int id)
+        public IActionResult OnPostDelete([FromBody] int id)
         {
-            var categoria = await _context.Categorias.FindAsync(id);
+            var categoria = _unitOfWork.Categoria.GetFirstOrDefault(c => c.Id == id);
             if (categoria == null)
             {
                 return NotFound();
             }
 
-            _context.Categorias.Remove(categoria);
-            await _context.SaveChangesAsync();
+            _unitOfWork.Categoria.Remove(categoria);
+            _unitOfWork.Save();
 
             TempData["Success"] = "Categoría eliminada exitosamente.";
 
