@@ -11,5 +11,6 @@ namespace ECommerce.DataAccess
 
         // DbSets de las entidades de la aplicación
         public DbSet<Categoria> Categorias { get; set; }
+        public DbSet<Producto> Productos { get; set; }
     }
 }

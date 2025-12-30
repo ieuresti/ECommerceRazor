@@ -26,12 +26,24 @@ namespace ECommerce.DataAccess.Repository
             dbSet.Add(entity);
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<T> GetAll(string? includeProperties = null)
         {
             // Declaramos una variable de tipo IQueryable<T> llamada 'query' y la inicializamos
             // con el DbSet correspondiente. IQueryable permite componer consultas LINQ
             // que no se ejecutan inmediatamente contra la base de datos.
             IQueryable<T> query = dbSet;
+
+            // Incluimos las propiedades de navegación si se proporcionan
+            if (!string.IsNullOrWhiteSpace(includeProperties))
+            {
+                // Separamos los nombres de las propiedades por comas y las incluye en la consulta
+                foreach (var includeProperty in includeProperties.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                {
+                    // Usamos el método Include para agregar la propiedad de navegación a la consulta
+                    query = query.Include(includeProperty.Trim());
+                }
+            }
+
             // Al llamar a ToList() ejecutamos la consulta construida hasta ahora contra la BD
             // y se materializan los resultados en una lista en memoria (List<T>).
             // Esto provoca que se ejecute la sentencia SQL equivalente (p. ej. SELECT * FROM ...)

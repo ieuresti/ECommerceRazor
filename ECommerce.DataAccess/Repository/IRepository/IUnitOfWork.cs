@@ -10,6 +10,7 @@ namespace ECommerce.DataAccess.Repository.IRepository
     public interface IUnitOfWork : IDisposable // Hereda de IDisposable para liberar recursos
     {
         ICategoriaRepository Categoria { get; }
+        IProductoRepository Producto { get; }
         void Save();
     }
 }

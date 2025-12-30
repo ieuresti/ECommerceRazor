@@ -16,9 +16,11 @@ namespace ECommerce.DataAccess.Repository
         {
             this._context = context;
             Categoria = new CategoriaRepository(_context); // Inicializa el repositorio de Categorias
+            Producto = new ProductoRepository(_context); // Inicializa el repositorio de Productos
         }
 
         public ICategoriaRepository Categoria { get; private set; } // Propiedad para acceder al repositorio de Categorias
+        public IProductoRepository Producto { get; private set; } // Propiedad para acceder al repositorio de Productos
 
         public void Dispose()
         {
