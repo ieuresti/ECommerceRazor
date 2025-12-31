@@ -1,0 +1,55 @@
+﻿@page
+@model ECommerceRazor.Pages.Admin.Productos.DetalleModel
+@{
+    ViewData["Title"] = "Detalle del Producto";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h4>Detalle del producto</h4>
+        </div>
+
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">ID</dt>
+                <dd class="col-sm-9">@Model.Producto.Id</dd>
+
+                <dt class="col-sm-3">Nombre</dt>
+                <dd class="col-sm-9">@Model.Producto.Nombre</dd>
+
+                <dt class="col-sm-3">Descripción</dt>
+                <dd class="col-sm-9">@Model.Producto.Descripcion</dd>
+
+                <dt class="col-sm-3">Imagen</dt>
+                <dd class="col-sm-9">
+                    @if (!string.IsNullOrEmpty(Model.Producto.Imagen))
+                    {
+                        <div class="mb-3">
+                            <img src="~/img/@Model.Producto.Imagen" alt="@Model.Producto.Nombre" class="img-thumbnail" style="max-width: 200px;" />
+                        </div>
+                    }
+                </dd>
+
+                <dt class="col-sm-3">Precio</dt>
+                <dd class="col-sm-9">$@Model.Producto.Precio.ToString("F2")</dd>
+
+                <dt class="col-sm-3">Cantidad Disponible</dt>
+                <dd class="col-sm-9">@Model.Producto.CantidadDisponible</dd>
+
+                <dt class="col-sm-3">Categoría</dt>
+                <dd class="col-sm-9">@Model.Categoria.Nombre</dd>
+
+                <dt class="col-sm-3">Fecha de creación</dt>
+                <dd class="col-sm-9">@Model.Producto.FechaCreacion.ToString("dd/MM/yyyy")</dd>
+            </dl>
+        </div>
+
+        <div class="card-footer text-end">
+            <a asp-page="Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Regresar
+            </a>
+        </div>
+
+    </div>
+</div>
