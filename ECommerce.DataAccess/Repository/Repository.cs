@@ -51,7 +51,7 @@ namespace ECommerce.DataAccess.Repository
             return query.ToList();
         }
 
-        public T GetFirstOrDefault(Expression<Func<T, bool>>? filter = null)
+        public T GetFirstOrDefault(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
             // Si se proporciona un filtro, aplicarlo a la consulta
@@ -60,6 +60,18 @@ namespace ECommerce.DataAccess.Repository
                 // Aplicamos el filtro a la consulta usando el método Where
                 query = query.Where(filter);
             }
+
+            // Incluimos las propiedades de navegación si se proporcionan
+            if (!string.IsNullOrWhiteSpace(includeProperties))
+            {
+                // Separamos los nombres de las propiedades por comas y las incluye en la consulta
+                foreach (var includeProperty in includeProperties.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                {
+                    // Usamos el método Include para agregar la propiedad de navegación a la consulta
+                    query = query.Include(includeProperty.Trim());
+                }
+            }
+
             // Retornamos el primer elemento que cumple con el filtro o el valor por defecto (null)
             return query.FirstOrDefault();
         }
