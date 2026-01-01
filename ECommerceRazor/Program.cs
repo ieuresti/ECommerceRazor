@@ -1,6 +1,7 @@
 using ECommerce.DataAccess;
 using ECommerce.DataAccess.Repository;
 using ECommerce.DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,12 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+
+// Configuracion de Identity
+builder.Services.AddDefaultIdentity<IdentityUser>(opciones =>
+    // Establecer si se requiere confirmacion de cuenta para iniciar sesion  
+    opciones.SignIn.RequireConfirmedAccount = false
+).AddEntityFrameworkStores<ApplicationDbContext>();
 
 // Agregar repositorios al contenedor de inyeccion de dependencias
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -31,6 +38,8 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseAuthentication();
 
 app.MapStaticAssets();
 app.MapRazorPages()
