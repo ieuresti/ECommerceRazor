@@ -10,6 +10,8 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using ECommerce.Models;
+using ECommerce.Utility;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -29,13 +31,15 @@ namespace ECommerceRazor.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -43,6 +47,7 @@ namespace ECommerceRazor.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
         /// <summary>
@@ -70,6 +75,18 @@ namespace ECommerceRazor.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
+            // Campos adicionales para el registro de usuario
+            [Required]
+            public string Nombres { get; set; }
+            [Required]
+            public string Apellidos { get; set; }
+            [Required]
+            public string Ciudad { get; set; }
+            [Required]
+            public string Direccion { get; set; }
+            [Required]
+            public string Pais { get; set; }
+
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -116,10 +133,34 @@ namespace ECommerceRazor.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                user.Nombres = Input.Nombres;
+                user.Apellidos = Input.Apellidos;
+                user.Ciudad = Input.Ciudad;
+                user.Direccion = Input.Direccion;
+                user.Pais = Input.Pais;
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
+                // Crear los roles en la base de datos si no existen
+                if (!await _roleManager.RoleExistsAsync(CNT.Administrador))
+                {
+                    _roleManager.CreateAsync(new IdentityRole(CNT.Administrador)).GetAwaiter().GetResult();
+                    _roleManager.CreateAsync(new IdentityRole(CNT.Cliente)).GetAwaiter().GetResult();
+                }
 
                 if (result.Succeeded)
                 {
+                    // Asignar rol segun la seleccion del usuario en el formulario de registro
+                    string role = Request.Form["radioUserRole"].ToString();
+                    if (role == CNT.Administrador)
+                    {
+                        await _userManager.AddToRoleAsync(user, CNT.Administrador);
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, CNT.Cliente);
+                    }
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
@@ -154,16 +195,16 @@ namespace ECommerceRazor.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private IdentityUser CreateUser()
+        private ApplicationUser CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<IdentityUser>();
+                return Activator.CreateInstance<ApplicationUser>();
             }
             catch
             {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
-                    $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(ApplicationUser)}'. " +
+                    $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }

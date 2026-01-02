@@ -1,7 +1,9 @@
 using ECommerce.DataAccess;
 using ECommerce.DataAccess.Repository;
 using ECommerce.DataAccess.Repository.IRepository;
+using ECommerce.Utility;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,16 +11,20 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
+// Agregar soporte para EmailSender
+builder.Services.AddSingleton<IEmailSender, EmailSender>();
+
 // Configuracion contexto de la cadena de conexion
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
 // Configuracion de Identity
-builder.Services.AddDefaultIdentity<IdentityUser>(opciones =>
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(opciones =>
     // Establecer si se requiere confirmacion de cuenta para iniciar sesion  
     opciones.SignIn.RequireConfirmedAccount = false
-).AddEntityFrameworkStores<ApplicationDbContext>();
+).AddEntityFrameworkStores<ApplicationDbContext>()
+.AddDefaultTokenProviders();
 
 // Agregar repositorios al contenedor de inyeccion de dependencias
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -37,9 +43,9 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
-app.UseAuthorization();
-
+// Autenticación debe ir antes de autorización
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapStaticAssets();
 app.MapRazorPages()
