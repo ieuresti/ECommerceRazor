@@ -1,10 +1,12 @@
 using ECommerce.DataAccess.Repository.IRepository;
 using ECommerce.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ECommerceRazor.Pages.Cliente.Inicio
 {
+    [Authorize]
     public class DetalleModel : PageModel
     {
         private readonly IUnitOfWork _unitOfWork;

@@ -26,6 +26,17 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(opciones =>
 ).AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
+// Soporte para Cookies de autenticacion y autorizacion
+builder.Services.ConfigureApplicationCookie(options => 
+{
+    options.LoginPath = $"/Identity/Account/Login";
+    options.LogoutPath = $"/Identity/Account/Logout";
+    options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+    options.Cookie.HttpOnly = true; // Mitigar ataques XSS
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(60); // Tiempo de expiracion de la cookie
+    options.SlidingExpiration = true; // Renovar cookie con cada solicitud
+});
+
 // Agregar repositorios al contenedor de inyeccion de dependencias
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
