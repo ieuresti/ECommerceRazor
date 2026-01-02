@@ -15,15 +15,15 @@ namespace ECommerceRazor.Pages.Cliente.Inicio
         }
 
         [BindProperty]
-        public Producto Producto { get; set; }
-
-        [BindProperty]
-        public int Cantidad { get; set; } // Cantidad para agregar al carrito
+        public CarritoCompra CarritoCompra { get; set; }
 
         public IActionResult OnGet(int id)
         {
-            Producto = _unitOfWork.Producto.GetFirstOrDefault(p => p.Id == id, "Categoria");
-            if (Producto == null)
+            // Inicializar CarritoCompra con el producto correspondiente
+            CarritoCompra = new() {
+                Producto = _unitOfWork.Producto.GetFirstOrDefault(p => p.Id == id, "Categoria")
+            };
+            if (CarritoCompra == null)
             {
                 return RedirectToPage("/Index");
             }
@@ -32,13 +32,13 @@ namespace ECommerceRazor.Pages.Cliente.Inicio
 
         public IActionResult OnPostAgregarAlCarrito()
         {
-            if (Cantidad < 1 || Cantidad > Producto.CantidadDisponible)
-            {
-                ModelState.AddModelError("Cantidad", $"Debe ingresar un valor entre 1 y {Producto.CantidadDisponible}.");
-                return Page();
-            }
+            //if (Cantidad < 1 || Cantidad > Producto.CantidadDisponible)
+            //{
+            //    ModelState.AddModelError("Cantidad", $"Debe ingresar un valor entre 1 y {Producto.CantidadDisponible}.");
+            //    return Page();
+            //}
 
-            TempData["Success"] = $"{Cantidad} unidad(es) del producto {Producto.Nombre} agregado al carrito exitosamente.";
+            //TempData["Success"] = $"{Cantidad} unidad(es) del producto {Producto.Nombre} agregado al carrito exitosamente.";
             return RedirectToPage("/Cliente/Inicio/Index");
         }
     }

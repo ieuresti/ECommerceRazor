@@ -17,10 +17,12 @@ namespace ECommerce.DataAccess.Repository
             this._context = context;
             Categoria = new CategoriaRepository(_context); // Inicializa el repositorio de Categorias
             Producto = new ProductoRepository(_context); // Inicializa el repositorio de Productos
+            CarritoCompra = new CarritoCompraRepository(_context); // Inicializa el repositorio de CarritoCompra
         }
 
         public ICategoriaRepository Categoria { get; private set; } // Propiedad para acceder al repositorio de Categorias
         public IProductoRepository Producto { get; private set; } // Propiedad para acceder al repositorio de Productos
+        public ICarritoCompraRepository CarritoCompra { get; private set; } // Propiedad para acceder al repositorio de CarritoCompra
 
         public void Dispose()
         {
