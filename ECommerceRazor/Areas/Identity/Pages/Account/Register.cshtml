@@ -39,6 +39,11 @@
                 <label asp-for="Input.Pais">Pais</label>
                 <span asp-validation-for="Input.Pais" class="text-danger"></span>
             </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" placeholder="Ingresa el teléfono" />
+                <label asp-for="Input.PhoneNumber">Teléfono</label>
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
             <!-- Campos legacy -->
             <div class="form-floating mb-3">
                 <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />

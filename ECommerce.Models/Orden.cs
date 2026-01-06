@@ -24,6 +24,7 @@ namespace ECommerce.Models
         public string Direccion { get; set; }
         [Display(Name = "Instrucciones Adicionales")]
         public string InstruccionesAdicionales { get; set; }
+        public string Estatus { get; set; }
         [Display(Name = "Fecha de Orden")]
         public DateTime FechaOrden { get; set; }
     }

@@ -92,6 +92,10 @@ namespace ECommerceRazor.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
+            [Display(Name = "Teléfono")]
+            public string PhoneNumber { get; set; }
+
+            [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -138,6 +142,7 @@ namespace ECommerceRazor.Areas.Identity.Pages.Account
                 user.Ciudad = Input.Ciudad;
                 user.Direccion = Input.Direccion;
                 user.Pais = Input.Pais;
+                user.PhoneNumber = Input.PhoneNumber;
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
