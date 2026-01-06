@@ -1,4 +1,5 @@
 ﻿using ECommerce.DataAccess.Repository.IRepository;
+using ECommerce.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +19,15 @@ namespace ECommerce.DataAccess.Repository
             Categoria = new CategoriaRepository(_context); // Inicializa el repositorio de Categorias
             Producto = new ProductoRepository(_context); // Inicializa el repositorio de Productos
             CarritoCompra = new CarritoCompraRepository(_context); // Inicializa el repositorio de CarritoCompra
+            Orden = new OrdenRepository(_context); // Inicializa el repositorio de Ordenes
+            DetalleOrden = new DetalleOrdenRepository(_context); // Inicializa el repositorio de DetalleOrden
         }
 
         public ICategoriaRepository Categoria { get; private set; } // Propiedad para acceder al repositorio de Categorias
         public IProductoRepository Producto { get; private set; } // Propiedad para acceder al repositorio de Productos
         public ICarritoCompraRepository CarritoCompra { get; private set; } // Propiedad para acceder al repositorio de CarritoCompra
+        public IOrdenRepository Orden { get; private set; } // Propiedad para acceder al repositorio de Ordenes
+        public IDetalleOrdenRepository DetalleOrden { get; private set; } // Propiedad para acceder al repositorio de DetalleOrden
 
         public void Dispose()
         {
