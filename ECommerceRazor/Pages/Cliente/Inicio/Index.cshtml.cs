@@ -2,6 +2,7 @@ using ECommerce.DataAccess.Repository.IRepository;
 using ECommerce.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Claims;
 
 namespace ECommerceRazor.Pages.Cliente
 {
@@ -18,7 +19,7 @@ namespace ECommerceRazor.Pages.Cliente
 
         public IActionResult OnGet()
         {
-            Productos = _unitOfWork.Producto.GetAll("Categoria");
+            Productos = _unitOfWork.Producto.GetAll(filter: null, "Categoria");
             return Page();
         }
     }

@@ -26,12 +26,18 @@ namespace ECommerce.DataAccess.Repository
             dbSet.Add(entity);
         }
 
-        public IEnumerable<T> GetAll(string? includeProperties = null)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
         {
             // Declaramos una variable de tipo IQueryable<T> llamada 'query' y la inicializamos
             // con el DbSet correspondiente. IQueryable permite componer consultas LINQ
             // que no se ejecutan inmediatamente contra la base de datos.
             IQueryable<T> query = dbSet;
+            // Si se proporciona un filtro, aplicarlo a la consulta
+            if (filter != null)
+            {
+                // Aplicamos el filtro a la consulta usando el método Where
+                query = query.Where(filter);
+            }
 
             // Incluimos las propiedades de navegación si se proporcionan
             if (!string.IsNullOrWhiteSpace(includeProperties))
@@ -54,20 +60,15 @@ namespace ECommerce.DataAccess.Repository
         public T GetFirstOrDefault(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
-            // Si se proporciona un filtro, aplicarlo a la consulta
             if (filter != null)
             {
-                // Aplicamos el filtro a la consulta usando el método Where
                 query = query.Where(filter);
             }
 
-            // Incluimos las propiedades de navegación si se proporcionan
             if (!string.IsNullOrWhiteSpace(includeProperties))
             {
-                // Separamos los nombres de las propiedades por comas y las incluye en la consulta
                 foreach (var includeProperty in includeProperties.Split(',', StringSplitOptions.RemoveEmptyEntries))
                 {
-                    // Usamos el método Include para agregar la propiedad de navegación a la consulta
                     query = query.Include(includeProperty.Trim());
                 }
             }

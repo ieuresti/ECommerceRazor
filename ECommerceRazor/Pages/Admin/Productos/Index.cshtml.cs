@@ -19,7 +19,7 @@ namespace ECommerceRazor.Pages.Admin.Productos
         public void OnGet()
         {
             // Cargar todos los productos junto con sus categorias relacionadas
-            Productos = _unitOfWork.Producto.GetAll("Categoria");
+            Productos = _unitOfWork.Producto.GetAll(filter: null, "Categoria");
         }
 
         public IActionResult OnPostDelete([FromBody] int id)

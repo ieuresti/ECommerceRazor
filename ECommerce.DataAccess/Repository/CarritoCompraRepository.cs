@@ -16,5 +16,19 @@ namespace ECommerce.DataAccess.Repository
         {
             this._context = context;
         }
+
+        public int DecrementarContador(CarritoCompra carritoCompra, int contador)
+        {
+            carritoCompra.Cantidad -= contador; // Disminuir la cantidad en el carrito de compra
+            _context.SaveChanges(); // Guardar los cambios en la base de datos
+            return carritoCompra.Cantidad; // Retornar la nueva cantidad
+        }
+
+        public int IncrementarContador(CarritoCompra carritoCompra, int contador)
+        {
+            carritoCompra.Cantidad += contador; // Aumentar la cantidad en el carrito de compra
+            _context.SaveChanges(); // Guardar los cambios en la base de datos
+            return carritoCompra.Cantidad; // Retornar la nueva cantidad
+        }
     }
 }
