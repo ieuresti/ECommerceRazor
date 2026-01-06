@@ -35,7 +35,7 @@
                                         <label>Nombre Completo</label>
                                     </div>
                                     <div class="col-7">
-                                        <input name="Nombre" class="form-control" placeholder="Ingresa tu nombre" required />
+                                        <input asp-for="Orden.NombreUsuario" class="form-control" readonly disabled />
                                     </div>
                                 </div>
                                 <div class="row my-1">
@@ -43,7 +43,7 @@
                                         <label>Teléfono</label>
                                     </div>
                                     <div class="col-7">
-                                        <input name="Telefono" type="tel" class="form-control" placeholder="Ingresa tu teléfono" required />
+                                        <input asp-for="Orden.Telefono" type="tel" class="form-control" readonly disabled />
                                     </div>
                                 </div>
                                 <div class="row my-1">
@@ -51,7 +51,7 @@
                                         <label>Dirección</label>
                                     </div>
                                     <div class="col-7">
-                                        <textarea data-no-tinymce="true" name="Direccion" class="form-control" placeholder="Ingresa tu dirección" required style="height: 100px;"></textarea>
+                                        <textarea asp-for="Orden.Direccion" class="form-control" style="height: 100px;" readonly disabled></textarea>
                                     </div>
                                 </div>
                                 <div class="row my-1">
@@ -59,7 +59,7 @@
                                         <label>Instrucciones Adicionales</label>
                                     </div>
                                     <div class="col-7">
-                                        <textarea data-no-tinymce="true" name="Instrucciones" class="form-control" placeholder="Opcional" style="height: 80px;"></textarea>
+                                        <textarea asp-for="Orden.InstruccionesAdicionales" class="form-control" style="height: 80px;"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -78,14 +78,14 @@
                                                 <h6 class="my-0">Producto: @item.Producto.Nombre</h6>
                                                 <small class="text-muted">Cantidad: @item.Cantidad</small>
                                             </div>
-                                            <span class="text-muted">$@item.Producto.Precio</span>
+                                            <span class="text-muted">$@(item.Producto.Precio * item.Cantidad)</span>
                                         </li>
                                     }
 
                                     <!-- Total -->
                                     <li class="list-group-item d-flex justify-content-between bg-light">
                                         <small class="text-info">Total</small>
-                                        <strong class="text-info">$@Model.TotalCarrito</strong>
+                                        <strong class="text-info">$@Model.Orden.TotalOrden</strong>
                                     </li>
                                 </ul>
                             </div>

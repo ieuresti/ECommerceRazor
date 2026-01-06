@@ -21,6 +21,7 @@ namespace ECommerce.DataAccess.Repository
             CarritoCompra = new CarritoCompraRepository(_context); // Inicializa el repositorio de CarritoCompra
             Orden = new OrdenRepository(_context); // Inicializa el repositorio de Ordenes
             DetalleOrden = new DetalleOrdenRepository(_context); // Inicializa el repositorio de DetalleOrden
+            ApplicationUser = new ApplicationUserRepository(_context); // Inicializa el repositorio de ApplicationUser
         }
 
         public ICategoriaRepository Categoria { get; private set; } // Propiedad para acceder al repositorio de Categorias
@@ -28,6 +29,7 @@ namespace ECommerce.DataAccess.Repository
         public ICarritoCompraRepository CarritoCompra { get; private set; } // Propiedad para acceder al repositorio de CarritoCompra
         public IOrdenRepository Orden { get; private set; } // Propiedad para acceder al repositorio de Ordenes
         public IDetalleOrdenRepository DetalleOrden { get; private set; } // Propiedad para acceder al repositorio de DetalleOrden
+        public IApplicationUserRepository ApplicationUser { get; private set; } // Propiedad para acceder al repositorio de ApplicationUser
 
         public void Dispose()
         {

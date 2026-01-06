@@ -12,12 +12,12 @@ namespace ECommerceRazor.Pages.Cliente.Carrito
     {
         private readonly IUnitOfWork _unitOfWork;
         public IEnumerable<CarritoCompra> ListaCarritoCompra { get; set; }
-        public double TotalCarrito;
+        public Orden Orden { get; set; }
 
         public ResumenModel(IUnitOfWork unitOfWork)
         {
             this._unitOfWork = unitOfWork;
-            this.TotalCarrito = 0;
+            this.Orden = new Orden();
         }
         public IActionResult OnGet()
         {
@@ -33,8 +33,16 @@ namespace ECommerceRazor.Pages.Cliente.Carrito
                 // Calcular el total del carrito
                 foreach (var itemCarrito in ListaCarritoCompra)
                 {
-                    TotalCarrito += (double)(itemCarrito.Producto.Precio * itemCarrito.Cantidad);
+                    Orden.TotalOrden += (double)(itemCarrito.Producto.Precio * itemCarrito.Cantidad);
                 }
+
+                // Obtener los datos del usuario del repositorio de ApplicationUser
+                ApplicationUser applicationUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == claim.Value);
+                // Rellenar los datos de la orden con la informacion del usuario
+                Orden.NombreUsuario = applicationUser.Nombres + " " + applicationUser.Apellidos;
+                Orden.Direccion = applicationUser.Direccion;
+                Orden.Telefono = applicationUser.PhoneNumber;
+                Orden.InstruccionesAdicionales = Orden.InstruccionesAdicionales;
             }
 
             return Page();
