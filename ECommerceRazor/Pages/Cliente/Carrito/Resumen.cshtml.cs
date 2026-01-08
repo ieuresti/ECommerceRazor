@@ -4,6 +4,7 @@ using ECommerce.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Stripe.Checkout;
 using System.Security.Claims;
 
 namespace ECommerceRazor.Pages.Cliente.Carrito
@@ -98,10 +99,50 @@ namespace ECommerceRazor.Pages.Cliente.Carrito
                 }
 
                 // Limpiar el carrito de compras
-                _unitOfWork.CarritoCompra.RemoveRange(ListaCarritoCompra);
+                //_unitOfWork.CarritoCompra.RemoveRange(ListaCarritoCompra);
                 _unitOfWork.Save();
-            }
 
+                // Aqui esta el codigo para reenviar al pago en Stripe
+                var domain = $"{Request.Scheme}://{Request.Host.Value}";
+                var options = new SessionCreateOptions
+                {
+                    PaymentMethodTypes = new List<string>{ "card" },
+                    LineItems = new List<SessionLineItemOptions>(),
+                    Mode = "payment",
+                    SuccessUrl = $"{domain}/Cliente/Carrito/ConfirmacionOrden?id={Orden.Id}",
+                    CancelUrl = $"{domain}/Cliente/Carrito/Index",
+                };
+
+                // Agregar los items del carrito a la session de Stripe
+                foreach (var item in ListaCarritoCompra)
+                {
+                    var sessionLineItem = new SessionLineItemOptions
+                    {
+                        PriceData = new SessionLineItemPriceDataOptions
+                        {
+                            UnitAmount = (long)(item.Producto.Precio * 100), // Convertir a centavos (requerido de Stripe)
+                            Currency = "usd",
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            {
+                                Name = item.Producto.Nombre
+                            },
+                        },
+                        Quantity = item.Cantidad,
+                    };
+                    options.LineItems.Add(sessionLineItem);
+                }
+
+                var service = new SessionService();
+                Session session = service.Create(options);
+                Response.Headers.Add("Location", session.Url);
+
+                // Guardar el sessionId y PaymentIntentId de Stripe en bd
+                Orden.SessionId = session.Id;
+                Orden.PaymentIntentId = session.PaymentIntentId;
+                _unitOfWork.Save();
+
+                return new StatusCodeResult(303);
+            }
             return Page();
         }
     }

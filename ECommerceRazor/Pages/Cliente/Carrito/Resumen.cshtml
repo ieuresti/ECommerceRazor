@@ -1,5 +1,7 @@
 ﻿@page
+@using Microsoft.Extensions.Options
 @model ECommerceRazor.Pages.Cliente.Carrito.ResumenModel
+@inject IOptions<ECommerce.Utility.ConfiguracionStripe> Stripe
 @{
     ViewData["Title"] = "Resumen de Orden";
 }
@@ -107,3 +109,8 @@
         </div>
     </div>
 </form>
+
+@section Scripts {
+    <script src="https://js.stripe.com/v3/"></script>
+    <partial name="_ValidationScriptsPartial" />
+}

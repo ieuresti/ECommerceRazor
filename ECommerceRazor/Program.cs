@@ -5,6 +5,7 @@ using ECommerce.Utility;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,9 @@ builder.Services.AddSingleton<IEmailSender, EmailSender>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+
+// Soporte para la configuracion de Stripe
+builder.Services.Configure<ConfiguracionStripe>(builder.Configuration.GetSection("Stripe"));
 
 // Configuracion de Identity
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(opciones =>
@@ -53,6 +57,10 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
+// Configurar la clave secreta de Stripe
+string key = builder.Configuration.GetSection("Stripe:ClaveSecreta").Get<string>();
+StripeConfiguration.ApiKey = key;
 
 // Autenticación debe ir antes de autorización
 app.UseAuthentication();

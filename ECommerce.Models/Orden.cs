@@ -18,7 +18,8 @@ namespace ECommerce.Models
         [Required]
         [DisplayFormat(DataFormatString = "{0:C}")] // Formato de moneda
         public double TotalOrden { get; set; }
-        public string? TransaccionId { get; set; } // Id de la transaccion de la plataforma de pago
+        public string? SessionId { get; set; }
+        public string? PaymentIntentId { get; set; }
         public string NombreUsuario { get; set; }
         public string Telefono { get; set; }
         public string Direccion { get; set; }
