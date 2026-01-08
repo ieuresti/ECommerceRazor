@@ -98,8 +98,6 @@ namespace ECommerceRazor.Pages.Cliente.Carrito
                     _unitOfWork.Save();
                 }
 
-                // Limpiar el carrito de compras
-                //_unitOfWork.CarritoCompra.RemoveRange(ListaCarritoCompra);
                 _unitOfWork.Save();
 
                 // Aqui esta el codigo para reenviar al pago en Stripe
@@ -136,9 +134,8 @@ namespace ECommerceRazor.Pages.Cliente.Carrito
                 Session session = service.Create(options);
                 Response.Headers.Add("Location", session.Url);
 
-                // Guardar el sessionId y PaymentIntentId de Stripe en bd
+                // Guardar el sessionId de Stripe en bd
                 Orden.SessionId = session.Id;
-                Orden.PaymentIntentId = session.PaymentIntentId;
                 _unitOfWork.Save();
 
                 return new StatusCodeResult(303);

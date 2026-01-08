@@ -1,0 +1,18 @@
+﻿@page
+@model ECommerceRazor.Pages.Cliente.Carrito.ConfirmacionOrdenModel
+@{
+    ViewData["Title"] = "Confirmación de Orden";
+}
+
+<div class="container row">
+    <div class="col-12 text-center">
+        <h1 class="text-success text-center">Orden creada correctamente</h1>
+        El número de orden es: @Model.OrdenId
+        <img src="~/img/imagen-confirmacion.jpg" width="90%" />
+    </div>
+    <div class="col-12 text-center">
+        <br />
+        Su orden ha sido creada correctamente.
+        Gracias por su compra!
+    </div>
+</div>
