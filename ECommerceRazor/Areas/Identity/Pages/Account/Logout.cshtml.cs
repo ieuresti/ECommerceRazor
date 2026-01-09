@@ -2,13 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Threading.Tasks;
+using ECommerce.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace ECommerceRazor.Areas.Identity.Pages.Account
 {
@@ -26,6 +27,10 @@ namespace ECommerceRazor.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
             await _signInManager.SignOutAsync();
+
+            // Limpia la sesion del carrito de compras
+            HttpContext.Session.Remove(CNT.CarritoSession);
+
             _logger.LogInformation("User logged out.");
             if (returnUrl != null)
             {

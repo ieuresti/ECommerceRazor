@@ -21,5 +21,8 @@ namespace ECommerce.Utility
         public const string EstadoCompletado = "Estado_Completado";
         public const string EstadoCancelado = "Estado_Cancelado";
         public const string EstadoReembolsado = "Estado_Reembolsado";
+
+        // Nombre de la session para el carrito de compra
+        public const string CarritoSession = "CarritoSession";
     }
 }

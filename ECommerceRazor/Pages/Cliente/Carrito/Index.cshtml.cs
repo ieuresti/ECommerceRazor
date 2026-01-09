@@ -1,5 +1,6 @@
 using ECommerce.DataAccess.Repository.IRepository;
 using ECommerce.Models;
+using ECommerce.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -56,8 +57,15 @@ namespace ECommerceRazor.Pages.Cliente.Carrito
             var carrito = _unitOfWork.CarritoCompra.GetFirstOrDefault(filter: c => c.Id == carritoId);
             if (carrito.Cantidad == 1)
             {
+                // Almacenar en la session la cantidad actualizada de productos en el carrito
+                var contador = _unitOfWork.CarritoCompra.GetAll(
+                        u => u.ApplicationUserId == carrito.ApplicationUserId).ToList().Count - 1;
+
                 _unitOfWork.CarritoCompra.Remove(carrito);
                 _unitOfWork.Save();
+
+                // Actualizar la session del carrito de compra para reflejar la cantidad actualizada
+                HttpContext.Session.SetInt32(CNT.CarritoSession, contador);
             }
             else
             {
@@ -72,7 +80,15 @@ namespace ECommerceRazor.Pages.Cliente.Carrito
             if (carrito != null)
             {
                 _unitOfWork.CarritoCompra.Remove(carrito);
+
+                // Almacenar en la session la cantidad actualizada de productos en el carrito
+                var contador = _unitOfWork.CarritoCompra.GetAll(
+                        u => u.ApplicationUserId == carrito.ApplicationUserId).ToList().Count - 1;
+
                 _unitOfWork.Save();
+
+                // Actualizar la session del carrito de compra para reflejar la cantidad actualizada
+                HttpContext.Session.SetInt32(CNT.CarritoSession, contador);
             }
             return RedirectToPage("/Cliente/Carrito/Index");
         }

@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@using ECommerce.Utility
+@inject IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -46,11 +49,24 @@
                             <a class="nav-link text-dark" asp-area="" asp-page="/Admin/Ordenes/Index">Manejo de Ordenes</a>
                         </li>
                         <!-- Carrito de compra -->
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Cliente/Carrito/Index">
-                                <i class="bi bi-cart4"></i>
-                            </a>
-                        </li>
+                        @if (HttpContextAccessor.HttpContext.Session.GetInt32(CNT.CarritoSession) != null)
+                        {
+                            <!-- Si hay artículos en el carrito y la sesión no es nula, mostrar la cantidad de artículos -->
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Cliente/Carrito/Index">
+                                    <i class="bi bi-cart4"></i> &nbsp; (@HttpContextAccessor.HttpContext.Session.GetInt32(CNT.CarritoSession))
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <!-- Caso contrario no mostrar la cantidad -->
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Cliente/Carrito/Index">
+                                    <i class="bi bi-cart4"></i> &nbsp; (0)
+                                </a>
+                            </li>
+                        }
                     </ul>
 
                     <!-- LoginPartial alineado a la derecha -->

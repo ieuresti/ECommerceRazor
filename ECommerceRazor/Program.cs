@@ -41,6 +41,16 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true; // Renovar cookie con cada solicitud
 });
 
+builder.Services.AddDistributedMemoryCache(); // Soporte para cache en memoria
+
+// Soporte para trabajo con sesiones
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Tiempo de inactividad antes de expirar la sesion
+    options.Cookie.HttpOnly = true; // Mitigar ataques XSS
+    options.Cookie.IsEssential = true; // Asegurar que la cookie se cree aunque el usuario no acepte cookies
+});
+
 // Agregar repositorios al contenedor de inyeccion de dependencias
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -65,6 +75,7 @@ StripeConfiguration.ApiKey = key;
 // Autenticación debe ir antes de autorización
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSession();
 
 app.MapStaticAssets();
 app.MapRazorPages()

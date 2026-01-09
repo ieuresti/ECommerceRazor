@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using ECommerce.DataAccess.Repository.IRepository;
+using ECommerce.Utility;
 
 namespace ECommerceRazor.Areas.Identity.Pages.Account
 {
@@ -21,11 +23,13 @@ namespace ECommerceRazor.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, IUnitOfWork unitOfWork)
         {
             _signInManager = signInManager;
             _logger = logger;
+            this._unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -114,6 +118,17 @@ namespace ECommerceRazor.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    // Buscar el usuario autenticado en la bd
+                    var user = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Email == Input.Email);
+                    if (user != null) 
+                    {
+                        // Calcular la cantidad de items en el carrito para este usuario
+                        var cantidadCarrito = _unitOfWork.CarritoCompra.GetAll(c => c.ApplicationUserId == user.Id).ToList().Count;
+                        
+                        // Guardar la cantidad que tiene en la variable de sesion
+                        HttpContext.Session.SetInt32(CNT.CarritoSession, cantidadCarrito);
+                    }
+
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
