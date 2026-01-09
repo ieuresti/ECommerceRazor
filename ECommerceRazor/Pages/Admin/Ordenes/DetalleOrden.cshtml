@@ -1,0 +1,123 @@
+﻿@page "{id:int}"
+@model ECommerceRazor.Pages.Admin.Ordenes.DetalleOrdenModel
+@{
+    ViewData["Title"] = "Detalle de Orden";
+}
+
+<h1 class="mt-4">Detalle de la orden @Model.Orden.Id</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Información de la orden</h5>
+                    <p><strong>Id Orden:</strong> @Model.Orden.Id</p>
+                    <p><strong>Usuario:</strong> @Model.Orden.NombreUsuario</p>
+                    <p><strong>Teléfono:</strong> @Model.Orden.Telefono</p>
+                    <p><strong>Dirección de Envio:</strong> @Model.Orden.Direccion</p>
+                    <p><strong>Estatus:</strong> @Model.Orden.Estatus</p>
+                    <p><strong>Total de la Orden:</strong> @Model.Orden.TotalOrden</p>
+                    <p><strong>Fecha:</strong> @Model.Orden.FechaOrden</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Detalle de los productos</h5>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var detalle in Model.DetallesOrden)
+                            {
+                                <tr>
+                                    <td>@detalle.Producto.Nombre</td>
+                                    <td>@detalle.Cantidad</td>
+                                    <td>@detalle.Precio.ToString("N")</td>
+                                    <td>@(detalle.Cantidad* detalle.Precio)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div class="mb-4">
+                <div>
+                    <label for="estadoSelect" class="form-label"><strong>Cambiar Estatus de la Orden: </strong></label>
+                    <div class="input-group">
+                        @if (Model.Orden.Estatus == "Estado_Completado" ||
+                             Model.Orden.Estatus == "Estado_Cancelado" ||
+                             Model.Orden.Estatus == "Estado_Reembolsado")
+                        {
+                            <p class="text-muted mt-2"><strong>Estado final: </strong>@Model.Orden.Estatus.Replace("_", " ")</p>
+                        }
+                        else
+                        {
+                            <select id="estadoSelect" class="form-select">
+                                <option value="">Selecciona un Estado</option>
+                                @foreach (var estado in Model.EstadosDisponibles)
+                                {
+                                    <option value="@estado">@estado.Replace("_", " ")</option>
+                                }
+                            </select>
+                            <br />
+                            <button id="btnActualizarEstado" onclick="actualizarEstado(@Model.Orden.Id)" class="btn btn-primary">Actualizar Estado</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function actualizarEstado(ordenId) {
+            var estadoSelect = document.getElementById("estadoSelect");
+            var estado = estadoSelect?.value ?? "";
+            const btnActualizar = document.getElementById("btnActualizarEstado");
+
+            if (estado === "") {
+                alert("Por favor, selecciona un estado válido.");
+                return;
+            }
+
+            // Obtener token de forma segura (puede no existir si no hay formulario)
+            const tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+            const token = tokenInput ? tokenInput.value : null;
+
+            // Enviar solicitud AJAX para actualizar el estado
+            $.post(`?handler=ActualizarEstado`, { id: ordenId, nuevoEstado: estado, __RequestVerificationToken: token })
+                .done(function (response) {
+                    if (response && response.success) {
+                        alert(response.message);
+                        estadoSelect.disabled = true;
+                        btnActualizar.disabled = true;
+                        
+                        const estadoFinal = document.createElement("p");
+                        estadoFinal.className = "text-muted mt-2";
+                        estadoFinal.innerHTML = `<strong>Estado final: </strong>${estado.replace("_", " ")}`;
+                        // appendChild en el padre del select (input-group)
+                        estadoSelect.parentElement.appendChild(estadoFinal);
+                        // Recargar para reflejar cambios
+                        location.reload();
+                    } else {
+                        alert("Error: " + (response?.message ?? "Respuesta inválida del servidor."));
+                    }
+                })
+                .fail(function () {
+                    alert("Error al actualizar el estado de la orden.");
+                });
+        }
+    </script>
+}

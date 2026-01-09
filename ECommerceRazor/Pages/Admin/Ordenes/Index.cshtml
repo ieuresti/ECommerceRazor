@@ -1,0 +1,61 @@
+﻿@page
+@model ECommerceRazor.Pages.Admin.Ordenes.IndexModel
+@{
+    ViewData["Title"] = "Administrar Ordenes";
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Lista de ordenes</h2>
+    </div>
+
+    @if (Model.Ordenes != null && Model.Ordenes.Any())
+    {
+        <table id="ordenesTable" class="table table-striped table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Id Orden</th>
+                    <th>Usuario</th>
+                    <th>Teléfono</th>
+                    <th>Dirección de Envio</th>
+                    <th>Estatus</th>
+                    <th>Total Orden</th>
+                    <th>Instrucciones Adicionales</th>
+                    <th>Fecha de Orden</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var orden in Model.Ordenes)
+                {
+                    <tr>
+                        <td>@orden.Id</td>
+                        <td>@orden.NombreUsuario</td>
+                        <td>@orden.Telefono</td>
+                        <td>@orden.Direccion</td>
+                        <td>@orden.Estatus</td>
+                        <td>$@orden.TotalOrden.ToString("N")</td>                                              
+                        <td>@orden.InstruccionesAdicionales</td>                        
+                        <td>@orden.FechaOrden.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            <a class="btn btn-info btn-sm" asp-page="DetalleOrden" asp-route-id="@orden.Id">
+                                <i class="bi bi-info-circle"></i> Detalle
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            No hay ordenes que mostrar.
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="~/js/ordenesTable.js"></script>
+}
