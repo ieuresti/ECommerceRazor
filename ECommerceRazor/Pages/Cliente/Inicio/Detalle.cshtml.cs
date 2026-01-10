@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace ECommerceRazor.Pages.Cliente.Inicio
 {
-    [Authorize]
+    [Authorize(Roles = "Cliente")]
     public class DetalleModel : PageModel
     {
         private readonly IUnitOfWork _unitOfWork;

@@ -2,12 +2,14 @@ using ECommerce.DataAccess;
 using ECommerce.DataAccess.Repository;
 using ECommerce.DataAccess.Repository.IRepository;
 using ECommerce.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceRazor.Pages.Admin.Categorias
 {
+    [Authorize(Roles = "Administrador")]
     public class IndexModel : PageModel
     {
         private readonly IUnitOfWork _unitOfWork;

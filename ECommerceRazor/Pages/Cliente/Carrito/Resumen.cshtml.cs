@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace ECommerceRazor.Pages.Cliente.Carrito
 {
-    [Authorize]
+    [Authorize(Roles = "Cliente")]
     public class ResumenModel : PageModel
     {
         private readonly IUnitOfWork _unitOfWork;

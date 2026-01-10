@@ -30,6 +30,12 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(opciones =>
 ).AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
+// Configurar requerimiento de confirmacion de Email
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = true;
+});
+
 // Soporte para Cookies de autenticacion y autorizacion
 builder.Services.ConfigureApplicationCookie(options => 
 {

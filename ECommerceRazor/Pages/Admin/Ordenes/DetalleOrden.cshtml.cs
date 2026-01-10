@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ECommerceRazor.Pages.Admin.Ordenes
 {
-    [Authorize]
+    [Authorize(Roles = "Administrador")]
     public class DetalleOrdenModel : PageModel
     {
         private readonly IUnitOfWork _unitOfWork;

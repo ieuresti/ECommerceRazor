@@ -1,11 +1,13 @@
 using ECommerce.DataAccess.Repository.IRepository;
 using ECommerce.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ECommerceRazor.Pages.Admin.Productos
 {
+    [Authorize(Roles = "Administrador")]
     public class CrearModel : PageModel
     {
         private readonly IUnitOfWork _unitOfWork;

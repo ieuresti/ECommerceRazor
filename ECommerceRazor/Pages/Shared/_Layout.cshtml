@@ -35,37 +35,48 @@
                             <a class="nav-link text-dark" asp-area="" asp-page="/Index">Inicio</a>
                         </li>
                         <!-- Menú desplegable Admin -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-dark" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Administración
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="adminDropdown">
-                                <li><a class="dropdown-item" asp-area="" asp-page="/Admin/Categorias/Index">Categorías</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-page="/Admin/Productos/Index">Productos</a></li>
-                            </ul>
-                        </li>
-                        <!-- Ordenes -->
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Admin/Ordenes/Index">Manejo de Ordenes</a>
-                        </li>
-                        <!-- Carrito de compra -->
-                        @if (HttpContextAccessor.HttpContext.Session.GetInt32(CNT.CarritoSession) != null)
+                        @if (User.Identity.IsAuthenticated)
                         {
-                            <!-- Si hay artículos en el carrito y la sesión no es nula, mostrar la cantidad de artículos -->
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Cliente/Carrito/Index">
-                                    <i class="bi bi-cart4"></i> &nbsp; (@HttpContextAccessor.HttpContext.Session.GetInt32(CNT.CarritoSession))
-                                </a>
-                            </li>
-                        }
-                        else
-                        {
-                            <!-- Caso contrario no mostrar la cantidad -->
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Cliente/Carrito/Index">
-                                    <i class="bi bi-cart4"></i> &nbsp; (0)
-                                </a>
-                            </li>
+                            <!-- Opciones para el administrador -->
+                            @if (User.IsInRole("Administrador"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-dark" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Administración
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                                        <li><a class="dropdown-item" asp-area="" asp-page="/Admin/Categorias/Index">Categorías</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-page="/Admin/Productos/Index">Productos</a></li>
+                                    </ul>
+                                </li>
+                                <!-- Ordenes -->
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Admin/Ordenes/Index">Manejo de Ordenes</a>
+                                </li>
+                            }
+                            <!-- Opciones para el cliente -->
+                            @if (User.IsInRole("Cliente"))
+                            {
+                                <!-- Carrito de compra -->
+                                @if (HttpContextAccessor.HttpContext.Session.GetInt32(CNT.CarritoSession) != null)
+                                {
+                                    <!-- Si hay artículos en el carrito y la sesión no es nula, mostrar la cantidad de artículos -->
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-page="/Cliente/Carrito/Index">
+                                            <i class="bi bi-cart4"></i> &nbsp; (@HttpContextAccessor.HttpContext.Session.GetInt32(CNT.CarritoSession))
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <!-- Caso contrario no mostrar la cantidad -->
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-page="/Cliente/Carrito/Index">
+                                            <i class="bi bi-cart4"></i> &nbsp; (0)
+                                        </a>
+                                    </li>
+                                }
+                            }
                         }
                     </ul>
 

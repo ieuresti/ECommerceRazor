@@ -163,8 +163,13 @@ namespace ECommerceRazor.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _userManager.AddToRoleAsync(user, CNT.Cliente);
+                        if (role == CNT.Cliente)
+                        {
+                            await _userManager.AddToRoleAsync(user, CNT.Cliente);
+                        }
                     }
+                    // Por defecto, asignar el rol de Cliente
+                    await _userManager.AddToRoleAsync(user, CNT.Cliente);
 
                     _logger.LogInformation("User created a new account with password.");
 
@@ -177,8 +182,8 @@ namespace ECommerceRazor.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirma tu email",
+                        $"Por favor confirma tu cuenta haciendo <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>click aquí</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

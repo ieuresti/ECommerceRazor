@@ -1,12 +1,14 @@
 using ECommerce.DataAccess.Repository.IRepository;
 using ECommerce.Models;
 using ECommerce.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Stripe.Checkout;
 
 namespace ECommerceRazor.Pages.Cliente.Carrito
 {
+    [Authorize(Roles = "Cliente")]
     public class ConfirmacionOrdenModel : PageModel
     {
         private readonly IUnitOfWork _unitOfWork;
