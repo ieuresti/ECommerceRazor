@@ -18,7 +18,7 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+  /*margin-bottom: 60px;*/
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
@@ -28,4 +28,17 @@ body {
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
+}
+
+/*Estilos botones ver detalle*/
+.btn-outline-dark:hover {
+    background-color: #343a40; /* Oscurece el fondo */
+    color: #ffffff; /* Cambia el texto a blanco */
+    transform: scale(1.05); /* Añade un ligero zoom */
+}
+
+.btn-outline-dark:hover i {
+    transform: rotate(360deg); /* Gira el ícono */
+    transition: transform 0.4s ease; /* Suaviza la animación */
+
 }

@@ -2,7 +2,7 @@
 @using ECommerce.Utility
 @inject IHttpContextAccessor HttpContextAccessor
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -22,17 +22,20 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark box-shadow">
             <div class="container">
+
+                <img src="~/img/logo.png" alt="Logo" class="img-fluid" style="height:40px; width:auto; margin-right:10px;" />
+
                 <a class="navbar-brand" asp-area="" asp-page="/Index">ECommerceRazor</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Inicio</a>
+                            <a class="nav-link text-white" asp-area="" asp-page="/Index">Inicio</a>
                         </li>
                         <!-- Menú desplegable Admin -->
                         @if (User.Identity.IsAuthenticated)
@@ -41,17 +44,17 @@
                             @if (User.IsInRole("Administrador"))
                             {
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-dark" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle text-white" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         Administración
                                     </a>
-                                    <ul class="dropdown-menu" aria-labelledby="adminDropdown">
-                                        <li><a class="dropdown-item" asp-area="" asp-page="/Admin/Categorias/Index">Categorías</a></li>
-                                        <li><a class="dropdown-item" asp-area="" asp-page="/Admin/Productos/Index">Productos</a></li>
+                                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="adminDropdown">
+                                        <li><a class="dropdown-item text-white" asp-area="" asp-page="/Admin/Categorias/Index">Categorías</a></li>
+                                        <li><a class="dropdown-item text-white" asp-area="" asp-page="/Admin/Productos/Index">Productos</a></li>
                                     </ul>
                                 </li>
                                 <!-- Ordenes -->
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-page="/Admin/Ordenes/Index">Manejo de Ordenes</a>
+                                    <a class="nav-link text-white" asp-area="" asp-page="/Admin/Ordenes/Index">Manejo de Ordenes</a>
                                 </li>
                             }
                             <!-- Opciones para el cliente -->
@@ -62,7 +65,7 @@
                                 {
                                     <!-- Si hay artículos en el carrito y la sesión no es nula, mostrar la cantidad de artículos -->
                                     <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-page="/Cliente/Carrito/Index">
+                                        <a class="nav-link text-white" asp-area="" asp-page="/Cliente/Carrito/Index">
                                             <i class="bi bi-cart4"></i> &nbsp; (@HttpContextAccessor.HttpContext.Session.GetInt32(CNT.CarritoSession))
                                         </a>
                                     </li>
@@ -71,7 +74,7 @@
                                 {
                                     <!-- Caso contrario no mostrar la cantidad -->
                                     <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-page="/Cliente/Carrito/Index">
+                                        <a class="nav-link text-white" asp-area="" asp-page="/Cliente/Carrito/Index">
                                             <i class="bi bi-cart4"></i> &nbsp; (0)
                                         </a>
                                     </li>
@@ -87,16 +90,37 @@
                 </div>
             </div>
         </nav>
+
+        <!-- Header -->
+        @{
+            var rutaActual = ViewContext.HttpContext.Request.Path;
+        }
+        @if (rutaActual == "/Cliente/Inicio/Index")
+        {
+            <div class="w-100">
+                <img src="~/img/header.png" alt="Encabezado" class="img-fluid w-100" />
+            </div>
+        }
     </header>
+
+    <!-- Contenido principal -->
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - ECommerceRazor - <a asp-area="" asp-page="/Privacy">Privacy</a>
+    <!-- Banner -->
+    @if (rutaActual == "/Cliente/Inicio/Index")
+    {
+        <div class="w-100">
+            <img src="~/img/banner.png" alt="Encabezado" class="img-fluid w-100" />
+        </div>
+    }
+
+    <footer class="bg-dark text-light py-3">
+        <div class="container text-center">
+            &copy; 2026 - ECommerceRazor - <a asp-area="" asp-page="/Privacy">Privacidad</a>
         </div>
     </footer>
 
