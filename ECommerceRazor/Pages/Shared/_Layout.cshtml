@@ -104,8 +104,8 @@
     </header>
 
     <!-- Contenido principal -->
-    <div class="container">
-        <main role="main" class="pb-3">
+    <div class="container d-flex flex-column min-vh-100">
+        <main role="main" class="pb-3 flex-grow-1">
             @RenderBody()
         </main>
     </div>
@@ -118,7 +118,7 @@
         </div>
     }
 
-    <footer class="bg-dark text-light py-3">
+    <footer class="bg-dark text-light py-3 mt-auto">
         <div class="container text-center">
             &copy; 2026 - ECommerceRazor - <a asp-area="" asp-page="/Privacy">Privacidad</a>
         </div>
