@@ -10,7 +10,7 @@
         <input type="hidden" asp-for="CarritoCompra.ProductoId" />
         <input type="hidden" asp-for="CarritoCompra.ApplicationUserId" />
 
-        <div class="row">
+        <div class="row bg-black text-white p-4 rounded">
             <!-- Imagen del producto -->
             <div class="col-md-6">
                 <img src="@Url.Content($"~/img/{Model.CarritoCompra.Producto.Imagen}")" alt="@Model.CarritoCompra.Producto.Nombre" class="img-fluid rounded shadow w-100 h-100">
@@ -19,26 +19,26 @@
             <!-- Detalles del producto -->
             <div class="col-md-6">
                 <h1 class="display-5">@Model.CarritoCompra.Producto.Nombre</h1>
-                <p class="text-muted">
-                    <strong>Categoría: </strong>@Model.CarritoCompra.Producto.Categoria.Nombre
+                <p class="text-white">
+                    <strong><i class="bi bi-tag-fill"></i> Categoría: </strong>@Model.CarritoCompra.Producto.Categoria.Nombre
                 </p>
                 <p class="h4 text-primary">
-                    <strong>Precio: </strong>$@Model.CarritoCompra.Producto.Precio
+                    <strong>Precio: </strong><i class="bi bi-currency-dollar"></i>@Model.CarritoCompra.Producto.Precio
                 </p>
                 <p class="mt-4">
-                    @Model.CarritoCompra.Producto.Descripcion
+                    <i class="bi bi-info-circle"></i> @Model.CarritoCompra.Producto.Descripcion
                 </p>
-                <p><strong>Cantidad disponible: </strong>@Model.CarritoCompra.Producto.CantidadDisponible</p>
+                <p><strong><i class="bi bi-box-seam"></i> Cantidad disponible: </strong>@Model.CarritoCompra.Producto.CantidadDisponible</p>
 
                 <div class="mb-3">
                     <label for="Cantidad" class="form-label"><strong>Cantidad a agregar al carrito:</strong></label>
-                    <input type="number" class="form-control" id="Cantidad" asp-for="CarritoCompra.Cantidad" value="1" min="1" required>
+                    <input type="number" class="form-control bg-dark text-white border-secondary" id="Cantidad" asp-for="CarritoCompra.Cantidad" value="1" min="1" required>
                     <span asp-validation-for="CarritoCompra.Cantidad" class="text-danger"></span>
                 </div>
 
                 <!-- Botones -->
                 <div class="d-flex gap-2">
-                    <a asp-page="/Cliente/Inicio/Index" class="btn btn-secondary">Volver a la tienda</a>
+                    <a asp-page="/Cliente/Inicio/Index" class="btn btn-secondary"><i class="bi bi-arrow-return-left"></i> Volver a la tienda</a>
                     <button type="submit" class="btn btn-success"><i class="bi bi-cart3"></i> Agregar al carrito</button>
                 </div>
             </div>
