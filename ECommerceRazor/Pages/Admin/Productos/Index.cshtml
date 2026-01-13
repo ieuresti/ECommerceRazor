@@ -21,7 +21,6 @@
                 <tr>
                     <th>ID</th>
                     <th>@Html.DisplayNameFor(model => model.Productos.First().Nombre)</th>
-                    <th>Descripción</th>
                     <th>Imagen</th>
                     <th>Precio</th>
                     <th>Cantidad</th>
@@ -36,7 +35,6 @@
                     <tr>
                         <td>@producto.Id</td>
                         <td>@producto.Nombre</td>
-                        <td>@producto.Descripcion</td>
                         <td>
                             @if (!string.IsNullOrEmpty(producto.Imagen))
                             {
